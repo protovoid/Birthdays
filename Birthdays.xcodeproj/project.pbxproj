@@ -12,6 +12,10 @@
 		C0B57C521BB7FDDA0057F985 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B57C501BB7FDDA0057F985 /* Main.storyboard */; };
 		C0B57C541BB7FDDA0057F985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B57C531BB7FDDA0057F985 /* Assets.xcassets */; };
 		C0B57C571BB7FDDA0057F985 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B57C551BB7FDDA0057F985 /* LaunchScreen.storyboard */; };
+		C0B57C5F1BB8013D0057F985 /* ContactBirthdayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0B57C5E1BB8013D0057F985 /* ContactBirthdayCell.xib */; settings = {ASSET_TAGS = (); }; };
+		C0B57C611BB801510057F985 /* ContactBirthdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B57C601BB801510057F985 /* ContactBirthdayCell.swift */; settings = {ASSET_TAGS = (); }; };
+		C0B57C631BB801CF0057F985 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B57C621BB801CF0057F985 /* AddContactViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C0B57C651BB804590057F985 /* CreateContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B57C641BB804590057F985 /* CreateContactViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		C0B57C531BB7FDDA0057F985 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0B57C561BB7FDDA0057F985 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0B57C581BB7FDDA0057F985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0B57C5E1BB8013D0057F985 /* ContactBirthdayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactBirthdayCell.xib; sourceTree = "<group>"; };
+		C0B57C601BB801510057F985 /* ContactBirthdayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactBirthdayCell.swift; sourceTree = "<group>"; };
+		C0B57C621BB801CF0057F985 /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
+		C0B57C641BB804590057F985 /* CreateContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +64,11 @@
 			children = (
 				C0B57C4C1BB7FDDA0057F985 /* AppDelegate.swift */,
 				C0B57C4E1BB7FDDA0057F985 /* ViewController.swift */,
+				C0B57C621BB801CF0057F985 /* AddContactViewController.swift */,
+				C0B57C641BB804590057F985 /* CreateContactViewController.swift */,
+				C0B57C601BB801510057F985 /* ContactBirthdayCell.swift */,
 				C0B57C501BB7FDDA0057F985 /* Main.storyboard */,
+				C0B57C5E1BB8013D0057F985 /* ContactBirthdayCell.xib */,
 				C0B57C531BB7FDDA0057F985 /* Assets.xcassets */,
 				C0B57C551BB7FDDA0057F985 /* LaunchScreen.storyboard */,
 				C0B57C581BB7FDDA0057F985 /* Info.plist */,
@@ -124,6 +136,7 @@
 				C0B57C571BB7FDDA0057F985 /* LaunchScreen.storyboard in Resources */,
 				C0B57C541BB7FDDA0057F985 /* Assets.xcassets in Resources */,
 				C0B57C521BB7FDDA0057F985 /* Main.storyboard in Resources */,
+				C0B57C5F1BB8013D0057F985 /* ContactBirthdayCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +147,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0B57C611BB801510057F985 /* ContactBirthdayCell.swift in Sources */,
+				C0B57C631BB801CF0057F985 /* AddContactViewController.swift in Sources */,
+				C0B57C651BB804590057F985 /* CreateContactViewController.swift in Sources */,
 				C0B57C4F1BB7FDDA0057F985 /* ViewController.swift in Sources */,
 				C0B57C4D1BB7FDDA0057F985 /* AppDelegate.swift in Sources */,
 			);
