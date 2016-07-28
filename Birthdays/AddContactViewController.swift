@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import Contacts
 
 class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
 
@@ -66,6 +67,36 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
     // MARK: UITextFieldDelegate functions
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+      AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
+        if accessGranted {
+          let predicate = CNContact.predicateForContactsMatchingName(self.txtLastName.text!)
+          let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey]
+          var contacts = [CNContact]()
+          var message: String!
+          
+          let contactsStore = AppDelegate.getAppDelegate().contactStore
+          do {
+            contacts = try contactsStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: keys)
+            
+            if contacts.count == 0 {
+              message = "No contacts were found matching the given name."
+            }
+          }
+          catch {
+            message = "Unable to fetch contacts."
+          }
+          
+          
+          if message != nil {
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              AppDelegate.getAppDelegate().showMessage(message)
+          })
+            else {
+              // add code
+            }
+          
+        }
+      }
         return true
     }
     
