@@ -10,11 +10,17 @@
 import UIKit
 import Contacts
 
+protocol  AddContactViewControllerDelegate {
+  func didFetchContacts(contacts: [CNContact])
+}
+
 class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
 
     @IBOutlet weak var txtLastName: UITextField!
     
     @IBOutlet weak var pickerMonth: UIPickerView!
+  
+    var delegate: AddContactViewControllerDelegate!
     
     
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -29,7 +35,8 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
         pickerMonth.delegate = self
         txtLastName.delegate = self
         
-        let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "performDoneItemTap")
+        let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(AddContactViewController.performDoneItemTap))
+
         navigationItem.rightBarButtonItem = doneBarButtonItem
     }
 
@@ -91,10 +98,14 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
               AppDelegate.getAppDelegate().showMessage(message)
           })
+          }
             else {
-              // add code
+              dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.delegate.didFetchContacts(contacts)
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+              
             }
-          
         }
       }
         return true

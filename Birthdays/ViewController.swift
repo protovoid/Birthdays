@@ -8,10 +8,13 @@
 //
 
 import UIKit
+import Contacts
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddContactViewControllerDelegate {
 
     @IBOutlet weak var tblContacts: UITableView!
+  
+    var contacts = [CNContact]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+  
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if let identifier = segue.identifier {
+      if identifier == "idSegueAddContact" {
+        let addContactViewController = segue.destinationViewController as! AddContactViewController
+        addContactViewController.delegate = self
+      }
+    }
+  }
 
     
     // MARK: IBAction functions
@@ -52,12 +64,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return contacts.count
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        //let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCellWithIdentifier("idCellContactBirthday") as! ContactBirthdayCell
+      
+        let currentContact = contacts[indexPath.row]
+      
+      cell.lblFullname.text = "\(currentContact.givenName) \(currentContact.familyName)"
+      
+      
+      // set the birthday info.
+      if let birthday = currentContact.birthday {
+        cell.lblBirthday.text = "\(birthday.year)-\(birthday.month)-\(birthday.day)"
+      }
+      else {
+        cell.lblBirthday.text = "Birthday data not available"
+      }
+      
+      
+      // set the contact image.
+      if let imageData = currentContact.imageData {
+        cell.imgContactImage.image = UIImage(data: imageData)
+      }
+      
+      
+      // set the contact's home email address.
+      var homeEmailAddress: String!
+      for emailAddress in currentContact.emailAddresses {
+        if emailAddress.label == CNLabelHome {
+          homeEmailAddress = emailAddress.value as! String
+          break
+        }
+      }
+      
+      if homeEmailAddress != nil {
+        cell.lblEmail.text = homeEmailAddress
+      }
+      else {
+        cell.lblEmail.text = "Email not available"
+      }
         
         return cell
         
@@ -67,6 +116,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100.0
     }
+  
+  func didFetchContacts(contacts: [CNContact]) {
+    for contact in contacts {
+      self.contacts.append(contact)
+    }
+    tblContacts.reloadData()
+  }
 
 }
 
