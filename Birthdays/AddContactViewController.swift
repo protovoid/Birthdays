@@ -116,6 +116,31 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
     // MARK: Custom functions
 
     func performDoneItemTap() {
-        
+      AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
+        if accessGranted {
+          var contacts = [CNContact]()
+          
+          let keys = [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
+          
+          do {
+            let contactStore = AppDelegate.getAppDelegate().contactStore
+            try contactStore.enumerateContactsWithFetchRequest(CNContactFetchRequest(keysToFetch: keys)) { (contact, pointer) -> Void in
+              
+              if contact.birthday != nil && contact.birthday!.month == self.currentlySelectedMonthIndex {
+                contacts.append(contact)
+              }
+          }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              self.delegate.didFetchContacts(contacts)
+              self.navigationController?.popViewControllerAnimated(true)
+        })
     }
+          
+          catch let error as NSError {
+            print(error.description, separator: "", terminator: "\n")
+          }
+        }
+      }
+          }
 }
