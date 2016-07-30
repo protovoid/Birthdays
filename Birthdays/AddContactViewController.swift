@@ -77,7 +77,8 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
       AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
         if accessGranted {
           let predicate = CNContact.predicateForContactsMatchingName(self.txtLastName.text!)
-          let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey]
+          //let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey]
+          let keys = [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
           var contacts = [CNContact]()
           var message: String!
           

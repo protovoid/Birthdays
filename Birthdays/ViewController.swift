@@ -59,7 +59,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   func refetchContact(contact contact: CNContact, atIndexPath indexPath: NSIndexPath) {
     AppDelegate.getAppDelegate().requestForAccess { (accessGranted) -> Void in
       if accessGranted {
-        let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
+        //let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
+        let keys = [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
         
         do {
           let contactRefetched = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact.identifier, keysToFetch: keys)
@@ -74,6 +75,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
       }
     }
+  }
+  
+  
+  
+  func getDateStringFromComponents(dateComponents: NSDateComponents) -> String! {
+    if let date = NSCalendar.currentCalendar().dateFromComponents(dateComponents) {
+      let dateFormatter = NSDateFormatter()
+      dateFormatter.locale = NSLocale.currentLocale()
+      dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+      let dateString = dateFormatter.stringFromDate(date)
+      
+      return dateString
+    }
+    return nil
   }
   
   
@@ -96,7 +111,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let currentContact = contacts[indexPath.row]
     
-    cell.lblFullname.text = "\(currentContact.givenName) \(currentContact.familyName)"
+    //cell.lblFullname.text = "\(currentContact.givenName) \(currentContact.familyName)"
+    cell.lblFullname.text = CNContactFormatter.stringFromContact(currentContact, style: .FullName)
     
     if !currentContact.isKeyAvailable(CNContactBirthdayKey) || !currentContact.isKeyAvailable(CNContactImageDataKey) || !currentContact.isKeyAvailable(CNContactEmailAddressesKey) {
       refetchContact(contact: currentContact, atIndexPath: indexPath)
@@ -105,7 +121,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
       
       // set the birthday info.
       if let birthday = currentContact.birthday {
-        cell.lblBirthday.text = "\(birthday.year)-\(birthday.month)-\(birthday.day)"
+        //cell.lblBirthday.text = "\(birthday.year)-\(birthday.month)-\(birthday.day)"
+        cell.lblBirthday.text = getDateStringFromComponents(birthday)
       }
       else {
         cell.lblBirthday.text = "Birthday data not available"
