@@ -9,12 +9,13 @@
 
 import UIKit
 import Contacts
+import ContactsUI
 
 protocol  AddContactViewControllerDelegate {
   func didFetchContacts(contacts: [CNContact])
 }
 
-class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
+class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, CNContactPickerDelegate {
 
     @IBOutlet weak var txtLastName: UITextField!
     
@@ -50,8 +51,29 @@ class AddContactViewController: UIViewController, UITextFieldDelegate, UIPickerV
     // MARK: IBAction functions
     
     @IBAction func showContacts(sender: AnyObject) {
+      let contactPickerViewController = CNContactPickerViewController()
+      
+      // filter out contacts with no birthday
+      contactPickerViewController.predicateForEnablingContact = NSPredicate(format: "birthday != nil")
+      
+      contactPickerViewController.delegate = self
+      
+      // to show details card add following line and use contactPicker:didSelectContactProperty delegate method
+      // contactPickerViewController.displayedPropertyKeys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressKey, CNContactBirthdayKey, CNContactImageDataKey]
+      
+      presentViewController(contactPickerViewController, animated: true, completion: nil)
+      
+      
         
     }
+  
+  
+  // MARK: CNContactPickerDelegate function
+  
+  func contactPicker(picker: CNContactPickerViewController, didSelectContact contact: CNContact) {
+    delegate.didFetchContacts([contact])
+    navigationController?.popViewControllerAnimated(true)
+  }
  
     
     // MARK: UIPickerView Delegate and Datasource functions
