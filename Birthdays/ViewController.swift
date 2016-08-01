@@ -158,6 +158,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
   
   
   
+  
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     return 100.0
   }
@@ -194,18 +195,32 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
               contactViewController.contactStore = AppDelegate.getAppDelegate().contactStore
               contactViewController.displayedPropertyKeys = keys
               self.navigationController?.pushViewController(contactViewController, animated: true)
-          })
-        }
+            })
+          }
           catch {
             print("Unable to refetch the selected contact.", separator: "", terminator: "\n")
           }
-    }
+        }
       })
     }
   }
   
+  // MARK: UITableView methods for swipe to delete
   
+  func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return true
+  }
   
-  
+  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    if editingStyle == UITableViewCellEditingStyle.Delete {
+      contacts.removeAtIndex(indexPath.row)
+      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    }
+  }
 }
+
+
+
+
+
 
