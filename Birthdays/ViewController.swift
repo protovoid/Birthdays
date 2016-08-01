@@ -9,6 +9,7 @@
 
 import UIKit
 import Contacts
+import ContactsUI
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddContactViewControllerDelegate {
   
@@ -167,6 +168,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     tblContacts.reloadData()
   }
+  
+  
+  
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let selectedContact = contacts[indexPath.row]
+    
+    let keys = [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey]
+    
+    if selectedContact.areKeysAvailable([CNContactViewController.descriptorForRequiredKeys()]) {
+      let contactViewController = CNContactViewController(forContact: selectedContact)
+      contactViewController.contactStore = AppDelegate.getAppDelegate().contactStore
+      contactViewController.displayedPropertyKeys = keys
+      navigationController?.pushViewController(contactViewController, animated: true)
+    }
+    else {
+      AppDelegate.getAppDelegate().requestForAccess({ (accessGranted) -> Void in
+        if accessGranted {
+          do {
+            let contactRefetched = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(selectedContact.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+              let contactViewController = CNContactViewController(forContact: contactRefetched)
+              contactViewController.contactStore = AppDelegate.getAppDelegate().contactStore
+              contactViewController.displayedPropertyKeys = keys
+              self.navigationController?.pushViewController(contactViewController, animated: true)
+          })
+        }
+          catch {
+            print("Unable to refetch the selected contact.", separator: "", terminator: "\n")
+          }
+    }
+      })
+    }
+  }
+  
+  
+  
   
 }
 
