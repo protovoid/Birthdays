@@ -41,7 +41,28 @@ class CreateContactViewController: UIViewController, UITextFieldDelegate {
     // MARK: Custom functions
     
     func createContact() {
+        let newContact = CNMutableContact()
+      
+      newContact.givenName = txtFirstname.text!
+      newContact.familyName = txtLastname.text!
+      
+      let homeEmail = CNLabeledValue(label: CNLabelHome, value: txtHomeEmail.text!)
+      newContact.emailAddresses = [homeEmail]
+      
+      let birthdayComponents = NSCalendar.currentCalendar().components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day], fromDate: datePicker.date)
+      newContact.birthday = birthdayComponents
+      
+      do {
+        let saveRequest = CNSaveRequest()
+        saveRequest.addContact(newContact, toContainerWithIdentifier: nil)
+        try AppDelegate.getAppDelegate().contactStore.executeSaveRequest(saveRequest)
         
+        navigationController?.popViewControllerAnimated(true)
+      }
+      catch {
+        AppDelegate.getAppDelegate().showMessage("Unable to save the new contact.")
+      }
+      
     }
     
 
